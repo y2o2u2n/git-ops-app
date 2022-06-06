@@ -1,0 +1,42 @@
+name: CI
+on:
+  push:
+    branches: [ "master" ]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    - name: Replace env
+      uses: falnyr/replace-env-vars-action@master
+      env:
+        FOO_BAR: ${{ secrets.FOO_BAR }}
+      with:
+        filename: /src/main/resources/application-text.yml
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+      with:
+        arguments: build
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: y2o2u2n/git-ops-app:latest
+        
