@@ -19,7 +19,7 @@ jobs:
       env:
         FOO_BAR: ${{ secrets.FOO_BAR }}
       with:
-        filename: /src/main/resources/application-text.yml
+        filename: ./src/main/resources/application-text.yml
     - name: Build with Gradle
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
