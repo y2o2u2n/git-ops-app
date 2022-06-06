@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+foo:
+  bar: Nice to meet you at local!
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+foo:
+  bar: __FOO_BAR__
