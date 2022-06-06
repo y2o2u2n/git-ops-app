@@ -38,5 +38,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: user/app:latest
+        tags: y2o2u2n/git-ops-app:latest
         
